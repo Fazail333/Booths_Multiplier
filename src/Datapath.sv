@@ -1,30 +1,36 @@
-module Datapath (
-    input logic [15:0] Multiplier_B,
-    input logic [15:0] Multiplicand_A,
+module Datapath #(
+    parameter Width_inputs = 16,
+    parameter Width_PP = 33,         // Width of Partial Products
+    parameter Width_FP = 32,
+    parameter Width_CO = 5           // Width of counter
+) (
+    input logic [Width_inputs-1:0] Multiplier_B,
+    input logic [Width_inputs-1:0] Multiplicand_A,
 
     // Enables are the output of controller.
-    input logic enable_A,
-    input logic enable_B,
-    input logic enable_PP,
+    input logic                    enable_A,
+    input logic                    enable_B,
+    input logic                    enable_PP,
 
     // Load are the inputs from the user.
-    input logic load,
-    input logic load_PP,
-    input logic load_P,
+    input logic                    load,
+    input logic                    load_PP,
+    input logic                    load_P,
 
-    input logic clk,
-    input logic reset,
+    input logic                    clk,
+    input logic                    reset,
 
-    output logic count,      // count the 16 clock cycles and return 1 or 0. 
-    output logic [32:0] product 
+    output logic                   count,      // count the 16 clock cycles and return 1 or 0. 
+    output logic [Width_FP-1:0] product 
 );
 
-    logic [15:0] A, B;           
-    logic [15:0] A2;             // 2's complement of A
-    logic [15:0] A_out;          // sel A from the booth's table 
-    logic [32:0] A_extend;       // A convert into 33 bits
-    logic [32:0] PP, A_PP, S_PP; // Partial Products 33-bits
-    logic [4:0] count_16;
+    logic [Width_inputs-1:0] A, B;           
+    logic [Width_inputs-1:0] A2;             // 2's complement of A
+    logic [Width_inputs-1:0] A_out;          // sel A from the booth's table 
+    logic [Width_PP-1:0] A_extend;       // A convert into 33 bits
+    logic [Width_PP-1:0] PP, A_PP, S_PP; // Partial Products 33-bits
+    logic [Width_CO-1:0]  count_16;
+
     //logic [1:0] sel,   // Check the 0th and 1st bit of the partial products  
 
     // Inputs multiplier and multiplicand
