@@ -15,9 +15,9 @@ module Booth_Multiplier #(
   output logic [Width_product-1:0] product
 );
  
-logic en_a, en_b, \   //  Enable for multiplier and multiplicand
-      en_pp,      \   //  Enable for Partial Products
-      ld_p,       \   //  Load for Final product (i.e answer)
+logic en_a, en_b,    //  Enable for multiplier and multiplicand
+      en_pp,         //  Enable for Partial Products
+      ld_p,          //  Load for Final product (i.e answer)
       count;          //  count 16-bits 
 
 logic [Width_PP-1:0] pp;      // Partial product must be 33-bit 

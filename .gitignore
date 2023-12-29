@@ -1,0 +1,8 @@
+work
+*.mti
+*.mpf
+transcript
+*.wlf
+vivado
+*.log
+*.jou

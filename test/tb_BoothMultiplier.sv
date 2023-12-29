@@ -38,7 +38,7 @@ module tb_BoothMultiplier;
         @(posedge clk)
         reset <= 1; multiplicand <= 17'h00000; multiplier = 17'h00000; load <= 0;
         @(posedge clk);
-        reset <= 0; multiplicand <= 16'h8001; multiplier = 16'h7fff; load <= 1; 
+        reset <= 0; multiplicand <= 16'h8981; multiplier = 16'h8555; load <= 1; 
         @(posedge clk);
         load <= 0;
         @(posedge clk);
