@@ -4,7 +4,7 @@
 module ARS #(
   parameter Width = 33
 ) (
-  input  logic [Width-1:0] in,
+  input logic  [Width-1:0] in,
 
   output logic [Width-1:0] out
 );
