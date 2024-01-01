@@ -1,11 +1,3 @@
-#*********************************************************************
-#  * Filename :    Makefile
-#  * Date     :    02-01-2024
-#  * Author   :    @Fazail333
-#  *
-#  * Description:  Makefile for simulating Multiplier on xsim.
-#  *********************************************************************
-
 SHELL = /usr/bin/env bash
 
 SRC:= ../src/ARS.sv  			\
