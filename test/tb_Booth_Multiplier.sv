@@ -1,4 +1,4 @@
-module tb_BoothMultiplier;
+module tb_Booth_Multiplier;
 
     // Inputs
     logic [15:0] multiplicand;
@@ -26,7 +26,7 @@ module tb_BoothMultiplier;
     initial
     begin
         //initial value of clock
-        clk = 1'b0;
+        clk = 1'b1;
         //generating clock signal
         forever #5 clk = ~clk;
     end
@@ -34,38 +34,40 @@ module tb_BoothMultiplier;
     // Initial stimulus
     initial
     begin
+        //repeat (5) begin
         reset <= 0; multiplicand <= 17'h00000; multiplier = 17'h00000; load <= 0; load_PP <= 0;
         @(posedge clk)
         reset <= 1; multiplicand <= 17'h00000; multiplier = 17'h00000; load <= 0;
         @(posedge clk);
-        reset <= 0; multiplicand <= 16'h8981; multiplier = 16'h8555; load <= 1; 
+        reset <= 0; multiplicand <= $urandom; multiplier = $urandom; load <= 1;
         @(posedge clk);
         load <= 0;
         @(posedge clk);
         load_PP <= 1;
         @(posedge clk);
-        reset <= 0; multiplicand <= 5'h00; multiplier = 5'h00; load <= 0; load_PP <= 0;
-        repeat (30)@(posedge clk);
+        reset <= 0; load <= 0; load_PP <= 0;
+        repeat (18)@(posedge clk);
+        if ((multiplicand)*(multiplier) == (product))
+            $display( "multiplicand = %0d; multiplier = %0d; product = %0d", multiplicand, multiplier, product);
+        //end
         $stop;
     end
-
-    /*initial begin
-        // Initialize inputs
-        multiplicand = 16'b1010;
-        multiplier = 16'b1101;
-        load = 0;
-
-        // Apply reset
-        #10 reset = 1;
-
-        // Load data
-        #10 load = 1; reset = 0;
-
-        // Provide some clock cycles
-        #50;
-
-        // End simulation
-        $finish;
-    end*/
-
+    /*begin
+    repeat(10)begin
+        reset <= 1;
+        @(posedge clk);
+        reset <= 0; multiplicand <= $urandom; multiplier = $urandom; load <= 1;
+        #5
+        $display( "multiplicand = %0d;multiplier = %0d;",multiplicand,multiplier);
+        @(posedge clk);
+        load <= 0;
+        @(posedge clk);
+        load_PP <= 1;
+        @(posedge clk);
+        load_PP <= 0;
+        repeat (30)@(posedge clk);
+        end
+        $stop;
+   
+   end */
 endmodule

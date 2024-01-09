@@ -7,3 +7,11 @@ vivado
 *.log
 *.jou
 SIM
+bash_scripts
+.*.timestamp
+*.pb 
+*.wdb 
+xsim.dir
+*.str
+*.vcd
+obj_dir
