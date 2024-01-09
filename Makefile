@@ -97,14 +97,14 @@ else
 	touch $@
 endif
 
-.PHONY: verilate ver_waves 
+.PHONY: verilator ver_waves 
 
 ver_waves: verilate
 	@echo
 	@echo "### WAVES ###"
 	gtkwave waveform.vcd
 
-verilate: ./obj_dir/V$(MODULE)
+verilator: ./obj_dir/V$(MODULE)
 	@echo
 	@echo "### SIMULATING ###"
 	@./obj_dir/V$(MODULE)
