@@ -23,11 +23,11 @@ void dut_reset (VBooth_Multiplier *dut, vluint64_t &sim_time){
     }
 }
 
-void dut_inputs (VBooth_Multiplier *dut, vluint64_t &sim_time){
+void dut_inputs (VBooth_Multiplier *dut, vluint64_t &sim_time, int a, int b){
     if(sim_time >= 4 && sim_time < 5){
         dut->reset = 0;
-        dut->in_A = rand() % (32767 - (-32768) + 1) + (-32768);
-        dut->in_B = rand() % (32767 - (-32768) + 1) + (-32768);
+        dut->in_A = a;
+        dut->in_B = b;
         dut->ld_PP = 0;
         dut->ld = 1;
     }
@@ -65,6 +65,7 @@ void dut_loadoff (VBooth_Multiplier *dut, vluint64_t &sim_time){
 
 
 int main(int argc, char** argv, char** env) {
+    int a,b;
     srand (time(NULL));
     Verilated::commandArgs(argc, argv);
     VBooth_Multiplier *dut = new VBooth_Multiplier;
@@ -73,6 +74,9 @@ int main(int argc, char** argv, char** env) {
     VerilatedVcdC *m_trace = new VerilatedVcdC;
     dut->trace(m_trace, 5);
     m_trace->open("waveform.vcd");
+    
+    a = rand() % (32767 - (-32768) + 1) + (-32768);
+    b = rand() % (32767 - (-32768) + 1) + (-32768);
     
         while (sim_time < MAX_SIM_TIME) {
         	dut_reset(dut, sim_time);
@@ -84,7 +88,7 @@ int main(int argc, char** argv, char** env) {
         	    posedge_cnt++;
         	}
         
-        	dut_inputs (dut, sim_time);
+        	dut_inputs (dut, sim_time, a, b);
         	dut_load (dut, sim_time);
         	dut_loadpp (dut, sim_time);
         	dut_loadoff (dut, sim_time);
@@ -92,7 +96,10 @@ int main(int argc, char** argv, char** env) {
         	m_trace->dump(sim_time);
         	sim_time++;
         }
-
+	if ((a)*(b) == (dut->product)) {
+		printf("Multiplican =  %d; Multiplier =  %d; Product = %d\n" , a,b, dut->product); 
+		printf("SIMULATE SUCCESSFULLY\n");
+	}
     m_trace->close();
     delete dut;
     exit(EXIT_SUCCESS);
