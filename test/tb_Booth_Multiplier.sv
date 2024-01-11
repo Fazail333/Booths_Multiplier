@@ -38,18 +38,20 @@ module tb_Booth_Multiplier;
         @(posedge clk)
         reset <= 1; multiplicand <= 17'h00000; multiplier <= 17'h00000; load <= 0;
         @(posedge clk);
-        reset <= 0; multiplicand <= $random; multiplier <= $random; load <= 1;
-        @(posedge clk);
-        load <= 0;
-        @(posedge clk);
-        load_PP <= 1;
-        @(posedge clk);
-        reset <= 0; load <= 0; load_PP <= 0;
-        repeat (18)@(posedge clk);
-        if ((multiplicand)*(multiplier) == (product)) begin
-        	$display( "\nmultiplicand = %0d; multiplier = %0d; product = %0d", multiplicand, multiplier, product);
-        	$display ("SIMULATION SUCCESSFUL\n");
-        	$stop; end
+        repeat(10)begin
+            reset <= 0; multiplicand <= $random; multiplier <= $random; load <= 1;
+            @(posedge clk);
+            load <= 0;
+            @(posedge clk);
+            load_PP <= 1;
+            @(posedge clk);
+            reset <= 0; load <= 0; load_PP <= 0;
+            repeat (18)@(posedge clk);
+            if ((multiplicand)*(multiplier) == (product)) begin
+            	$display( "\nmultiplicand = %0d; multiplier = %0d; product = %0d", multiplicand, multiplier, product);
+            	$display ("SIMULATION SUCCESSFUL\n");
+                $stop; 
+        end end
         $stop;
     end
 endmodule
