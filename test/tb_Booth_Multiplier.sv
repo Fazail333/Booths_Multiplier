@@ -52,7 +52,6 @@ module tb_Booth_Multiplier;
                 else 
                 	$display("Error for input a=%d, b=%d, expected=%d, product=%d\n", a, b, mul_ref(a,b), product); 
         repeat(2) @(posedge clk);
-        a = 0; b = 0;
         end
         $stop;
     end
