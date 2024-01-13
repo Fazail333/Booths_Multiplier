@@ -13,7 +13,7 @@ module Input_Register #(
 
 logic [Width-1:0] hold;
 
-always_ff @( posedge clk ) begin
+always_ff @( posedge clk) begin
     if (reset) begin 
         out <= 16'h00000;
     end 

@@ -5,6 +5,7 @@ module counter #(
 ) (
   input logic              clk,
   input logic              reset,
+  input logic              start,
     
   input logic              en_PP,
 
@@ -12,7 +13,7 @@ module counter #(
 );
 
 always_ff @( posedge clk ) begin
-    if (reset)begin
+    if (reset | start)begin
         out <= 5'h0;
     end else if (en_PP) begin
         out <= out + 1;

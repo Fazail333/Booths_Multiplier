@@ -98,7 +98,7 @@ endif
 
 .PHONY: verilator ver_waves 
 
-ver_waves: verilate
+ver_waves: verilator
 	@echo
 	@echo "### WAVES ###"
 	gtkwave waveform.vcd

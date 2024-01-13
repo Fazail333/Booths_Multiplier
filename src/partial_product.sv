@@ -6,6 +6,7 @@ module partial_product #(
     input logic [Width_in-1:0] in_B,
     
     input logic                ld,
+    input logic                ld_p,
     input logic                en,
 
     input logic                clk,
@@ -19,7 +20,7 @@ logic [Width_PP-1:0]start;
 assign start = {16'h0000, in_B, 1'b0};
 
 always_ff @( posedge clk ) begin
-    if (reset)begin
+    if (reset | ld_p)begin
         out <= 33'h00000000; 
     end
     else begin

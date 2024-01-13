@@ -75,6 +75,7 @@ module Datapath #(
         .in(S_PP),
         .in_B(B),
         .ld(load_PP),
+        .ld_p(load_P),
         .en(enable_PP),
         .clk(clk),
         .reset(reset),
@@ -96,6 +97,7 @@ module Datapath #(
 
     counter count16 (
         .clk(clk),
+        .start(load),
         .reset(reset),
         .en_PP(enable_PP),
         .out(count_16)
