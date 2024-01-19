@@ -1,9 +1,9 @@
 // Compare the value of clock cycles to 15-bits
 
 module comparator #(
-   parameter Width = 5               // Counter width 
+   parameter WIDTH = 5               // Counter width 
 ) (
-   input logic [Width-1:0] in,
+   input logic [WIDTH-1:0] in,
 
    input logic             reset,
    input logic             clk,

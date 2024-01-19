@@ -4,12 +4,12 @@
 module adder #(
   parameter Width = 33
 ) ( 
-  input logic  [Width-1:0] in_A,
-  input logic  [Width-1:0] in_P,
+  input logic  [Width-1:0] in_a,
+  input logic  [Width-1:0] in_p,
 
   output logic [Width-1:0] out 
 );
 
-assign out = in_A + in_P;
+assign out = in_a + in_p;
     
 endmodule

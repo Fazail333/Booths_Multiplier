@@ -1,4 +1,4 @@
-module tb_Booth_Multiplier;
+module tb_booth_multiplier;
 
     // Inputs
     logic [15:0] multiplicand;
@@ -7,18 +7,18 @@ module tb_Booth_Multiplier;
     logic reset;
     logic valid_out;
     logic load;
-    logic load_PP;
+    logic load_pp;
 
     // Outputs
     logic [31:0] product;
 
     // Instantiate the Booth's Multiplier Datapath and Controller
-    Booth_Multiplier UUT (
-        .in_A(multiplicand),
-        .in_B(multiplier),
+    booth_multiplier UUT (
+        .in_a(multiplicand),
+        .in_b(multiplier),
         .clk(clk),
         .reset(reset),
-        .ld_PP(load_PP),
+        .ld_pp(load_pp),
         .ld(load),
         .ld_p(valid_out),
         .product(product)
@@ -58,7 +58,7 @@ module tb_Booth_Multiplier;
 
    task reset_sequence;
    	begin 
-               reset = 0; load = 0; load_PP = 0; 
+               reset = 0; load = 0; load_pp = 0; 
              @(posedge clk) reset = #1 1; 
    	     @(posedge clk) reset = #1 0;
    	end
@@ -69,11 +69,11 @@ module tb_Booth_Multiplier;
         	 multiplicand = in_a;
         	 multiplier = in_b;
         	 load = 0;  
-        	 load_PP = 0;
+        	 load_pp = 0;
         	@(posedge clk) load = #1 1;
         	@(posedge clk) load = #1 0;
-        	@(posedge clk) load_PP = #1 1;
-        	@(posedge clk) load_PP = #1 0;
+        	@(posedge clk) load_pp = #1 1;
+        	@(posedge clk) load_pp = #1 0;
         end
    endtask
    

@@ -1,15 +1,15 @@
-module Controller (
+module controller (
     input logic  load,
-    input logic  load_PP,
+    input logic  load_pp,
     input logic  count,
 
     input logic  clk,
     input logic  reset,
 
-    output logic load_P,
-    output logic enable_A,
-    output logic enable_B,
-    output logic enable_PP
+    output logic load_p,
+    output logic enable_a,
+    output logic enable_b,
+    output logic enable_pp
 );
 
 logic [1:0] c_state, n_state;
@@ -31,7 +31,7 @@ always_comb begin
       else n_state = S0; 
     end
     S1: begin   
-      if (load_PP) n_state = S2;
+      if (load_pp) n_state = S2;
       else n_state = S1; 
     end
     S2: begin   
@@ -50,38 +50,38 @@ end
 always_comb begin
   case (c_state)
     S0: begin   
-      enable_A  = 1'b0;
-      enable_B  = 1'b0;
-      enable_PP = 1'b0;
-      load_P    = 1'b0;  
+      enable_a  = 1'b0;
+      enable_b  = 1'b0;
+      enable_pp = 1'b0;
+      load_p    = 1'b0;  
     end
 
     S1: begin   
-      enable_A  = 1'b1;
-      enable_B  = 1'b1;
-      enable_PP = 1'b0;
-      load_P    = 1'b0;
+      enable_a  = 1'b1;
+      enable_b  = 1'b1;
+      enable_pp = 1'b0;
+      load_p    = 1'b0;
     end
 
     S2: begin   
-      enable_A  = 1'b1;
-      enable_B  = 1'b1;
-      enable_PP = 1'b1;
-      load_P    = 1'b0; 
+      enable_a  = 1'b1;
+      enable_b  = 1'b1;
+      enable_pp = 1'b1;
+      load_p    = 1'b0; 
     end
 
     S3: begin   
-      enable_A  = 1'b1;
-      enable_B  = 1'b1;
-      enable_PP = 1'b1;
-      load_P    = 1'b1;
+      enable_a  = 1'b1;
+      enable_b  = 1'b1;
+      enable_pp = 1'b1;
+      load_p    = 1'b1;
     end
 
     default: begin  
-      enable_A  = 1'b0;
-      enable_B  = 1'b0;
-      enable_PP = 1'b0;
-      load_P    = 1'b0;  
+      enable_a  = 1'b0;
+      enable_b  = 1'b0;
+      enable_pp = 1'b0;
+      load_p    = 1'b0;  
     end
   endcase
 end

@@ -1,14 +1,14 @@
 // This mux is use as Booth's Table 
 
 module mux4x1 #(
-  parameter Width = 16
+  parameter WIDTH = 16
 ) (
   input logic [1:0]       sel,
   
-  input logic [Width-1:0] seg0,
-  input logic [Width-1:0] seg1,
+  input logic [WIDTH-1:0] seg0,
+  input logic [WIDTH-1:0] seg1,
 
-  output logic [Width-1:0] out    // 16-bit ouput      
+  output logic [WIDTH-1:0] out    // 16-bit ouput      
 );
 
 always_comb begin

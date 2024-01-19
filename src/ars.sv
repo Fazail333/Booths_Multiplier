@@ -1,7 +1,7 @@
 // Arithematic Right Shift: It shifts
 // the output of the adder.
 
-module ARS #(
+module ars #(
   parameter Width = 33
 ) (
   input logic  [Width-1:0] in,

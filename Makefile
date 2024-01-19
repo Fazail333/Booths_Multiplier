@@ -1,22 +1,22 @@
-SRC_SV:= src/ARS.sv  			\
+SRC_SV:= src/ars.sv  			\
 	 src/adder.sv  		\
-	 src/Booth_Multiplier.sv  	\
+	 src/booth_multiplier.sv  	\
 	 src/comparator.sv  		\
-	 src/Controller.sv  		\
+	 src/controller.sv  		\
 	 src/counter.sv  		\
-	 src/Datapath.sv  		\
+	 src/datapath.sv  		\
 	 src/final_product.sv  		\
-	 src/Input_Register.sv  	\
+	 src/input_register.sv  	\
 	 src/mux4x1.sv  		\
 	 src/partial_product.sv  	\
 	 src/shifting.sv  		\
 	 src/twos_complement.sv		\
-	 test/tb_Booth_Multiplier.sv
+	 test/tb_booth_multiplier.sv
 
 COMP_OPTS_SV := --incr --relax
 
-TB_TOP := tb_Booth_Multiplier
-MODULE := Booth_Multiplier
+TB_TOP := tb_booth_multiplier
+MODULE := booth_multiplier
 
 #==== Default target - running VIVADO simulation without drawing waveforms ====#
 .PHONY: vivado viv_elaborate viv_compile
@@ -127,4 +127,4 @@ verilator: ./obj_dir/V$(MODULE)
 clean :
 	rm -rf *.jou *.log *.pb *.wdb xsim.dir *.str
 	rm -rf .*.timestamp *.tcl *.vcd .*.verilate
-	rm -rf obj_dir
+	rm -rf obj_dir .Xil

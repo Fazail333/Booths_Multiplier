@@ -4,61 +4,61 @@
 #include <verilated.h>
 #include <verilated_vcd_c.h>
 
-#include "VBooth_Multiplier.h"
+#include "Vbooth_multiplier.h"
 
 #define MAX_SIM_TIME 48
 #define VERIF_START_TIME 7
 vluint64_t sim_time = 0;
 vluint64_t posedge_cnt = 0;
 
-void dut_reset (VBooth_Multiplier *dut, vluint64_t &sim_time){
+void dut_reset (Vbooth_multiplier *dut, vluint64_t &sim_time){
     dut->reset = 0;
     if(sim_time >= 2 && sim_time < 4){
         dut->reset = 1;
-        dut->in_A = 0;
-        dut->in_B = 0;
-        dut->ld_PP = 0;
+        dut->in_a = 0;
+        dut->in_b = 0;
+        dut->ld_pp = 0;
         dut->ld = 0;
         dut->product = 0;
     }
 }
 
-void dut_inputs (VBooth_Multiplier *dut, vluint64_t &sim_time, int a, int b){
+void dut_inputs (Vbooth_multiplier *dut, vluint64_t &sim_time, int a, int b){
     if(sim_time >= 4 && sim_time < 5){
         dut->reset = 0;
-        dut->in_A = a;
-        dut->in_B = b;
-        dut->ld_PP = 0;
+        dut->in_a = a;
+        dut->in_b = b;
+        dut->ld_pp = 0;
         dut->ld = 1;
     }
 }
 
-void dut_load (VBooth_Multiplier *dut, vluint64_t &sim_time){
+void dut_load (Vbooth_multiplier *dut, vluint64_t &sim_time){
     if(sim_time >= 6 && sim_time < 8){
         dut->reset = 0;
-        dut->in_A = 0;
-        dut->in_B = 0;
-        dut->ld_PP = 0;
+        dut->in_a = 0;
+        dut->in_b = 0;
+        dut->ld_pp = 0;
         dut->ld = 0;
     }
 }
 
-void dut_loadpp (VBooth_Multiplier *dut, vluint64_t &sim_time){
+void dut_loadpp (Vbooth_multiplier *dut, vluint64_t &sim_time){
     if(sim_time >= 8 && sim_time < 10){
         dut->reset = 0;
-        dut->in_A = 0;
-        dut->in_B = 0;
-        dut->ld_PP = 1;
+        dut->in_a = 0;
+        dut->in_b = 0;
+        dut->ld_pp = 1;
         dut->ld = 0;
     }
 }
 
-void dut_loadoff (VBooth_Multiplier *dut, vluint64_t &sim_time){
+void dut_loadoff (Vbooth_multiplier *dut, vluint64_t &sim_time){
     if(sim_time >= 10 && sim_time < 12){
         dut->reset = 0;
-        dut->in_A = 0;
-        dut->in_B = 0;
-        dut->ld_PP = 0;
+        dut->in_a = 0;
+        dut->in_b = 0;
+        dut->ld_pp = 0;
         dut->ld = 0;
     }
 }
@@ -68,7 +68,7 @@ int main(int argc, char** argv, char** env) {
     int a,b;
     srand (time(NULL));
     Verilated::commandArgs(argc, argv);
-    VBooth_Multiplier *dut = new VBooth_Multiplier;
+    Vbooth_multiplier *dut = new Vbooth_multiplier;
 
     Verilated::traceEverOn(true);
     VerilatedVcdC *m_trace = new VerilatedVcdC;
