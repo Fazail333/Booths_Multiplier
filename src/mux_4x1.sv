@@ -1,6 +1,6 @@
 // This mux is use as Booth's Table 
 
-module mux4x1 #(
+module mux_4x1 #(
   parameter WIDTH = 16
 ) (
   input logic [1:0]       sel,

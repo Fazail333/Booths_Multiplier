@@ -59,7 +59,7 @@ module datapath #(
         .out(a2)
     );
                 
-    mux4x1 booth_table (
+    mux_4x1 booth_table (
         .sel(pp[1:0]), 
         .seg0(a),
         .seg1(a2),

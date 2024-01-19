@@ -7,7 +7,7 @@ SRC_SV:= src/ars.sv  			\
 	 src/datapath.sv  		\
 	 src/final_product.sv  		\
 	 src/input_register.sv  	\
-	 src/mux4x1.sv  		\
+	 src/mux_4x1.sv  		\
 	 src/partial_product.sv  	\
 	 src/shifting.sv  		\
 	 src/twos_complement.sv		\
