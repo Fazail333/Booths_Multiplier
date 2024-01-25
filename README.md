@@ -1,40 +1,38 @@
 # Booth's Multiplier for 16-bit Signed and Unsigned Multiplication
 
 ## Overview
-
-    This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports both signed and unsigned 16-bit multiplication.
+  This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports both signed and unsigned 16-bit multiplication.
 
 
 ## Description
 
-    Booth's Multiplier is an algorithm that performs binary multiplication using a combination of addition and shifting operations. It is known for its efficiency in reducing the number of partial products, making it suitable for hardware implementations.
+  Booth's Multiplier is an algorithm that performs binary multiplication using a combination of addition and shifting operations. It is known for its efficiency in reducing the number of partial products, making it suitable for hardware implementations.
 
 ## Languages Used
-
-    * System Verilog
-    * C++
-    * Makefile 
+  * System Verilog
+  * C++
+  * Makefile 
 
 # Key Features
 
-    * Support for Signed and Unsigned Multiplication:  
+  * Support for Signed and Unsigned Multiplication:  
     The multiplier is designed to handle both signed and unsigned 16-bit multiplication, providing flexibility for various use cases.
 
-    * Efficient Bit Manipulation: 
+  * Efficient Bit Manipulation: 
     The implementation optimizes the multiplication process by efficiently handling bit manipulations and reducing the number of partial products.
 
 
 ## Environments Used
 
-    * Linux Ubuntu 22.04.2
+  * Linux Ubuntu 22.04.2
 
 # System Design Overview
 
-    Representation of architecture through clear block diagrams is shown below.
+  Representation of architecture through clear block diagrams is shown below.
 
 ## Datapath Block Diagram
 
-    The block diagram of the Datapath depicts the flow of data within the multiplier's components, including partial product generation, shifting units, and the overall computation path.
+The block diagram of the Datapath depicts the flow of data within the multiplier's components, including partial product generation, shifting units, and the overall computation path.
 
  <img src="Datapath.png" width="600" height="450" />
 
@@ -42,7 +40,7 @@
 
 Additionally, the Controller block diagram demonstrates the control signals governing the operation of the multiplier. These visual representations offer an insightful overview of the multiplier's internal structure, aiding in understanding its functionality and facilitating potential integrations into larger digital systems.
 
- <img docs="Controller.png" width="600" height="450" />
+ <img src="Controller.png" width="600" height="450" />
 
 
 # Getting Started
@@ -90,3 +88,4 @@ Upon successful execution of the `make verilator` command, the terminal log outp
 Running the `make vivado` command generates the terminal log output as shown below:
 
 <img src="Vivado_implementation.png" width="600" height="450" />
+
