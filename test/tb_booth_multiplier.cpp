@@ -1,106 +1,64 @@
-#include <stdlib.h>
-#include <iostream>
-#include <cstdlib>
 #include <verilated.h>
 #include <verilated_vcd_c.h>
+#include "Vbooth_multiplier.h"  // Replace with the actual Verilated header file
 
-#include "Vbooth_multiplier.h"
-
-#define MAX_SIM_TIME 48
-#define VERIF_START_TIME 7
-vluint64_t sim_time = 0;
-vluint64_t posedge_cnt = 0;
-
-void dut_reset (Vbooth_multiplier *dut, vluint64_t &sim_time){
-    dut->reset = 0;
-    if(sim_time >= 2 && sim_time < 4){
-        dut->reset = 1;
-        dut->in_a = 0;
-        dut->in_b = 0;
-        dut->ld_pp = 0;
-        dut->ld = 0;
-        dut->product = 0;
+// Function to advance simulation time
+void advance_time(Vbooth_multiplier* top, int time_units) {
+    for (int i = 0; i < time_units; ++i) {
+        top->clk = !top->clk;
+        top->eval();
     }
 }
 
-void dut_inputs (Vbooth_multiplier *dut, vluint64_t &sim_time, int a, int b){
-    if(sim_time >= 4 && sim_time < 5){
-        dut->reset = 0;
-        dut->in_a = a;
-        dut->in_b = b;
-        dut->ld_pp = 0;
-        dut->ld = 1;
-    }
-}
-
-void dut_load (Vbooth_multiplier *dut, vluint64_t &sim_time){
-    if(sim_time >= 6 && sim_time < 8){
-        dut->reset = 0;
-        dut->in_a = 0;
-        dut->in_b = 0;
-        dut->ld_pp = 0;
-        dut->ld = 0;
-    }
-}
-
-void dut_loadpp (Vbooth_multiplier *dut, vluint64_t &sim_time){
-    if(sim_time >= 8 && sim_time < 10){
-        dut->reset = 0;
-        dut->in_a = 0;
-        dut->in_b = 0;
-        dut->ld_pp = 1;
-        dut->ld = 0;
-    }
-}
-
-void dut_loadoff (Vbooth_multiplier *dut, vluint64_t &sim_time){
-    if(sim_time >= 10 && sim_time < 12){
-        dut->reset = 0;
-        dut->in_a = 0;
-        dut->in_b = 0;
-        dut->ld_pp = 0;
-        dut->ld = 0;
-    }
-}
-
-
-int main(int argc, char** argv, char** env) {
-    int a,b;
-    srand (time(NULL));
+int main(int argc, char** argv) {
+    // Verilator setup
     Verilated::commandArgs(argc, argv);
-    Vbooth_multiplier *dut = new Vbooth_multiplier;
-
     Verilated::traceEverOn(true);
-    VerilatedVcdC *m_trace = new VerilatedVcdC;
-    dut->trace(m_trace, 5);
-    m_trace->open("waveform.vcd");
-    
-    a = rand() % (32767 - (-32768) + 1) + (-32768);
-    b = rand() % (32767 - (-32768) + 1) + (-32768);
-    
-        while (sim_time < MAX_SIM_TIME) {
-        	dut_reset(dut, sim_time);
 
-        	dut->clk ^= 1;
-        	dut->eval();
+    // Instantiate the Verilated model
+    Vbooth_multiplier* top = new Vbooth_multiplier;
 
-        	if (dut->clk == 1){
-        	    posedge_cnt++;
-        	}
-        
-        	dut_inputs (dut, sim_time, a, b);
-        	dut_load (dut, sim_time);
-        	dut_loadpp (dut, sim_time);
-        	dut_loadoff (dut, sim_time);
-        	
-        	m_trace->dump(sim_time);
-        	sim_time++;
-        }
-	if ((a)*(b) == (dut->product)) {
-		printf("Multiplican =  %d; Multiplier =  %d; Product = %d\n" , a,b, dut->product); 
-		printf("SIMULATE SUCCESSFULLY\n");
-	}
-    m_trace->close();
-    delete dut;
+    // Initialize trace dump
+    VerilatedVcdC* tfp = new VerilatedVcdC;
+    top->trace(tfp, 99);  // Trace 99 levels of hierarchy
+    tfp->open("dump.vcd");
+
+    // Set initial values
+    top->clk = 1;
+    top->reset = 0;
+
+    // Simulate for 10 clock cycles
+    for (int i = 0; i < 10; ++i) {
+        // Toggle clock
+        top->eval();
+        tfp->dump(10 * i);  // Dump waveform every 10 time units
+
+        top->clk = !top->clk;
+        top->eval();
+        tfp->dump(10 * i + 5);  // Dump waveform at half the clock cycle
+
+        // Your stimulus here
+        top->in_a = rand();
+        top->in_b = rand();
+        top->ld = 1;
+        top->ld_pp = 1;
+
+        // Execute one clock cycle
+        top->eval();
+        tfp->dump(10 * i + 10);  // Dump waveform at the next clock edge
+
+        top->ld = 0;
+        top->ld_pp = 0;
+
+        // Advance time to next clock edge
+        advance_time(top, 1);
+    }
+
+    // Close trace file
+    tfp->close();
+
+    // Clean up
+    delete top;
     exit(EXIT_SUCCESS);
 }
+
