@@ -34,13 +34,13 @@
 
 The block diagram of the Datapath depicts the flow of data within the multiplier's components, including partial product generation, shifting units, and the overall computation path.
 
- <img src="Datapath.png" width="600" height="450" />
+ ![Datapath](./docs/Datapath.png)
 
 ## Controller Block Diagram
 
 Additionally, the Controller block diagram demonstrates the control signals governing the operation of the multiplier. These visual representations offer an insightful overview of the multiplier's internal structure, aiding in understanding its functionality and facilitating potential integrations into larger digital systems.
 
- <img src="Controller.png" width="600" height="450" />
+ ![Controller](./docs/Controller.png)
 
 
 # Getting Started
