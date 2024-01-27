@@ -5,13 +5,14 @@
 #include <verilated_vcd_c.h>
 #include "Vbooth_multiplier.h"  // Replace with the actual Verilated header file
 
-#define MAX_SIM_TIME 48
+#define MAX_SIM_TIME 50
 vluint64_t sim_time = 0;
 
 int main(int argc, char** argv) {
-    int a,b;
-   
-    // Verilator setup
+int a,b;
+
+
+// Verilator setup
     Verilated::commandArgs(argc, argv);
     Verilated::traceEverOn(true);
 
@@ -20,62 +21,62 @@ int main(int argc, char** argv) {
 
     // Initialize trace dump
     VerilatedVcdC* tfp = new VerilatedVcdC;
-    top->trace(tfp, 6);  // Trace 99 levels of hierarchy
+    top->trace(tfp, 99);  // Trace 99 levels of hierarchy
     tfp->open("waveform.vcd");
-    a = rand() ;
+
+	a = rand() ;
     b = rand() ;
+
 	
-	while(sim_time < MAX_SIM_TIME){
-		top->reset = 0 ;
+    // Simulate for MAX_SIM_TIME
+    while (!Verilated::gotFinish() && sim_time < MAX_SIM_TIME) {
+        top->reset = 0;
 		if(sim_time >= 2 &&  sim_time < 4){
 			top->reset = 1;
 			top->in_a = 0;
 			top->in_b = 0;
-			top->ld_pp = 0;
-			top->ld = 0;
-			top->product = 0;
+			top->valid_in= 0;
 		}
 		top->clk ^= 1;
-        	top->eval();
-        
-        		
-		if(sim_time >= 4 &&  sim_time < 5){
+        top->eval();
+
+        if(sim_time >= 4 &&  sim_time < 5){
 			top->in_a = a;
 			top->in_b = b;
-			top->ld = 1;
 		}
+
 		if(sim_time >= 6 &&  sim_time < 8){
+
+			top->valid_in = 1;
 		
-			top->ld = 0;
-			top->in_a = 0;
-			top->in_b = 0;
 		}
- 		if(sim_time >= 8 &&  sim_time <10 ){
-			top->ld = 0;
- 			top->in_a = 0;
-			top->in_b = 0;
-			top->ld_pp = 1;
-		}
-		if(sim_time >= 10 &&  sim_time <12 ){
+			if(sim_time >= 8 &&  sim_time < 10){
 
-			top->reset = 0;
-			top->in_a = 0;
-			top->in_b = 0;
-			top->ld_pp = 0;
-			top->ld = 0;
-
+			top->valid_in = 0;
+		
 		}
+
 
 		tfp->dump(sim_time);
-        	sim_time++;
+		// Advance time
+        sim_time++;
+     
     }
-	if ((a)*(b) == (top->product)) {
-		printf("Multiplican =  %d; Multiplier =  %d; Product = %d\n" , a,b, top->product); 
-		printf("SIMULATE SUCCESSFULLY\n");
-   	}
- 
-   tfp->close();
-   delete top;
-   exit(EXIT_SUCCESS);
-}
 	
+	if ((a)*(b) == (top->product)) {
+		printf("Multiplican =  %d; Multiplier =  %d; Product = %d\n" , a,b, top->product);
+		printf("SIMULATE SUCCESSFULLY\n");
+	}
+
+
+
+
+    // Close trace file
+    tfp->close();
+
+    // Clean up
+    delete top;
+
+   return 0;
+}
+
