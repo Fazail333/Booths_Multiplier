@@ -6,12 +6,12 @@ module booth_multiplier #(
   input logic  [WIDTH_IN-1:0] in_a,
   input logic  [WIDTH_IN-1:0] in_b,
   
-  input logic                     valid_in,     // load for inputs 
+  input logic                     valid_in,     // valid_in for inputs 
     
   input logic                     clk,
   input logic                     reset,
 
-  output logic                    valid_out,          //  Load for Final product (i.e answer)
+  output logic                    valid_out,          //  valid_out for Final product (i.e answer)
   output logic [WIDTH_PRODUCT-1:0] product
 );
  
@@ -29,7 +29,7 @@ datapath dp_bm (
   .en_pp(en_pp),
   .en_fp(en_fp),
 
-  .load(valid_in),
+  .valid_in(valid_in),
   .count(valid_out),
 
   .clk(clk),
@@ -40,7 +40,7 @@ datapath dp_bm (
 
 // Booth Multiplier Controller
 controller cp_bm (
-  .load(valid_in),
+  .valid_in(valid_in),
 
   .count(valid_out),
   .clk(clk),

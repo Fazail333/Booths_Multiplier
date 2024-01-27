@@ -1,5 +1,5 @@
 module controller (
-    input logic  load,
+    input logic  valid_in,
     input logic  count,
 
     input logic  clk,
@@ -25,7 +25,7 @@ end
 always_comb begin
   case (c_state)
     S0: begin   
-      if (load) n_state = S1;
+      if (valid_in) n_state = S1;
       else n_state = S0; 
     end
     S1: begin   
@@ -42,7 +42,7 @@ end
 //output always block
 always_comb begin
   case (c_state)
-    S0: if (load) begin   
+    S0: if (valid_in) begin   
       en_i  = 1'b1;
       en_pp = 1'b0;
       en_fp = 1'b0; 
@@ -74,7 +74,7 @@ always_comb begin
     default: begin  
       en_i  = 1'b0;
       en_pp = 1'b0;
-      en_fp = 1'b1; 
+      en_fp = 1'b0; 
     end
   endcase
 end

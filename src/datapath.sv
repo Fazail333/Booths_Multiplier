@@ -11,7 +11,7 @@ module datapath #(
     input logic                    en_i,    //enable for inputs
     input logic                    en_pp,   //enable for partial products
     input logic                    en_fp,   //enable for final product
-    input logic                    load,    
+    input logic                    valid_in,    
 
     input logic                    clk,
     input logic                    reset,
@@ -103,7 +103,7 @@ module datapath #(
     );
 
     counter count16 (
-        .load(load),
+        .load(valid_in),
 
         .reset(reset),
         .clk(clk),
