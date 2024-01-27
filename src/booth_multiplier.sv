@@ -5,20 +5,18 @@ module booth_multiplier #(
 ) (
   input logic  [WIDTH_IN-1:0] in_a,
   input logic  [WIDTH_IN-1:0] in_b,
+  
+  input logic                     valid_in,     // load for inputs 
     
   input logic                     clk,
   input logic                     reset,
 
-  input logic                     ld_pp,  // load for Partial product
-  input logic                     ld,     // load for inputs 
-
-  output logic                    ld_p,          //  Load for Final product (i.e answer)
+  output logic                    valid_out,          //  Load for Final product (i.e answer)
   output logic [WIDTH_PRODUCT-1:0] product
 );
  
-logic en_a, en_b,    //  Enable for multiplier and multiplicand
-      en_pp,         //  Enable for Partial Products
-      count;          //  count 16-bits 
+logic en_i, en_fp,    //  Enable for multiplier and multiplicand
+      en_pp;           
 
 logic [WIDTH_PP-1:0] pp;      // Partial product must be 33-bit 
 
@@ -26,29 +24,31 @@ logic [WIDTH_PP-1:0] pp;      // Partial product must be 33-bit
 datapath dp_bm (
   .multiplier_b(in_b),
   .multiplicand_a(in_a),
-  .enable_a(en_a),
-  .enable_b(en_b),
-  .enable_pp(en_pp),
-  .load(ld),
-  .load_pp(ld_pp),
-  .load_p(ld_p),
-  .count(count),
+
+  .en_i(en_i),
+  .en_pp(en_pp),
+  .en_fp(en_fp),
+
+  .load(valid_in),
+  .count(valid_out),
+
   .clk(clk),
   .reset(reset),
+  
   .product(product)
 );
 
 // Booth Multiplier Controller
 controller cp_bm (
-  .load(ld),
-  .load_pp(ld_pp),
-  .count(count),
+  .load(valid_in),
+
+  .count(valid_out),
   .clk(clk),
   .reset(reset),
-  .load_p(ld_p),
-  .enable_a(en_a),
-  .enable_b(en_b),
-  .enable_pp(en_pp)
+
+  .en_i(en_i),
+  .en_fp(en_fp),
+  .en_pp(en_pp)
 );
 
 endmodule

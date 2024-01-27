@@ -2,7 +2,7 @@ module input_register #(
     parameter WIDTH = 16
 ) (
     input logic [WIDTH-1:0] in,           // input 
-    input logic             ld,           // load the input
+    //input logic             ld,           // load the input
     input logic             en,           // enable the input 
 
     input logic             clk,
@@ -11,18 +11,14 @@ module input_register #(
     output logic [WIDTH-1:0] out
 );
 
-logic [WIDTH-1:0] hold;
-
-always_ff @( posedge clk) begin
+always_ff @( posedge clk or posedge en) begin
     if (reset) begin 
-        out <= 16'h00000;
+        out <= 0;
     end 
     else begin
-        if (ld) begin
-            hold <= in;              
-        end else if (en) begin
-            out <= hold;            // enable the input to output
-        end
+        if (en) begin
+            out <= in;              
+        end 
     end
 end
     

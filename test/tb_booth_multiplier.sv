@@ -1,16 +1,18 @@
+localparam WIDTH_INPUT = 16;
+localparam WIDTH_OUTPUT = 32;
+
 module tb_booth_multiplier;
 
     // Inputs
-    logic [15:0] multiplicand;
-    logic [15:0] multiplier;
+    logic [WIDTH_INPUT-1:0] multiplicand;
+    logic [WIDTH_INPUT-1:0] multiplier;
     logic clk;
     logic reset;
     logic valid_out;
-    logic load;
-    logic load_pp;
+    logic valid_in;
 
     // Outputs
-    logic [31:0] product;
+    logic [WIDTH_OUTPUT-1:0] product;
 
     // Instantiate the Booth's Multiplier Datapath and Controller
     booth_multiplier UUT (
@@ -18,13 +20,12 @@ module tb_booth_multiplier;
         .in_b(multiplier),
         .clk(clk),
         .reset(reset),
-        .ld_pp(load_pp),
-        .ld(load),
-        .ld_p(valid_out),
+        .valid_in(valid_in),
+        .valid_out(valid_out),
         .product(product)
     );
 
-    logic [14:0]a,b;
+    logic [WIDTH_INPUT-2:0]a,b;
     
     // Clock generation
     initial
@@ -47,7 +48,6 @@ module tb_booth_multiplier;
            if (mul_ref(a,b) == (product)) begin
             	$display( "\nmultiplicand = %0d; multiplier = %0d; product = %0d", multiplicand, multiplier, mul_ref(a,b));
             	$display ("---> SUCCESS <---\n");
-                //$stop; 
                 end 
                 else 
                 	$display("Error for input a=%d, b=%d, expected=%d, product=%d\n", a, b, mul_ref(a,b), product); 
@@ -58,26 +58,23 @@ module tb_booth_multiplier;
 
    task reset_sequence;
    	begin 
-               reset = 0; load = 0; load_pp = 0; 
-             @(posedge clk) reset = #1 1; 
-   	     @(posedge clk) reset = #1 0;
+        reset = 0; valid_in = 0;
+        @(posedge clk) reset = #1 1; 
+   	    @(posedge clk) reset = #1 0;
    	end
    endtask
    
-   task apply_inputs(input logic [15:0]in_a, in_b);
+   task apply_inputs(input logic [WIDTH_INPUT-2:0]in_a, in_b);
         begin
         	 multiplicand = in_a;
         	 multiplier = in_b;
-        	 load = 0;  
-        	 load_pp = 0;
-        	@(posedge clk) load = #1 1;
-        	@(posedge clk) load = #1 0;
-        	@(posedge clk) load_pp = #1 1;
-        	@(posedge clk) load_pp = #1 0;
+        	 valid_in = 0;  
+        	@(posedge clk) valid_in = #1 1;
+        	@(posedge clk) valid_in = #1 0;
         end
    endtask
    
-   function [31:0]mul_ref(input logic [15:0]in_a, in_b);
+   function [WIDTH_OUTPUT-1:0]mul_ref(input logic [WIDTH_INPUT-2:0]in_a, in_b);
    	begin 
    		mul_ref = (in_a * in_b);
    	end

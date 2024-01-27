@@ -5,9 +5,9 @@ module partial_product #(
     input logic [WIDTH_PP-1:0] in,
     input logic [WIDTH_IN-1:0] in_b,
     
-    input logic                ld,
-    input logic                ld_p,
-    input logic                en,
+    input logic                en_i,
+    input logic                en_fp,
+    input logic                en_pp,
 
     input logic                clk,
     input logic                reset,
@@ -15,18 +15,14 @@ module partial_product #(
     output logic [WIDTH_PP-1:0] out 
 );
 
-logic [WIDTH_PP-1:0]start;
-
-assign start = {16'h0000, in_b, 1'b0};
-
-always_ff @( posedge clk ) begin
-    if (reset | ld_p)begin
-        out <= 33'h00000000; 
+always_ff @( posedge clk or posedge reset or posedge en_i or posedge en_pp) begin
+    if (reset)begin
+        out <= 0; 
     end
     else begin
-        if (ld) begin
-            out <= start;
-        end else if (en) begin
+        if (en_i) begin
+            out <= {16'h0000, in_b, 1'b0};
+        end else if (en_pp) begin
             out <= in;
         end
     end

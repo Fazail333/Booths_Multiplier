@@ -1,19 +1,17 @@
 module controller (
     input logic  load,
-    input logic  load_pp,
     input logic  count,
 
     input logic  clk,
     input logic  reset,
 
-    output logic load_p,
-    output logic enable_a,
-    output logic enable_b,
-    output logic enable_pp
+    output logic en_i,
+    output logic en_fp,
+    output logic en_pp
 );
 
 logic [1:0] c_state, n_state;
-parameter S0=2'b00, S1=2'b01, S2=2'b10, S3=2'b11;
+parameter S0=2'b00, S1=2'b01 ,S2=2'b10;
 
 always_ff @ (posedge clk or posedge reset) begin
     //reset is active high
@@ -31,16 +29,11 @@ always_comb begin
       else n_state = S0; 
     end
     S1: begin   
-      if (load_pp) n_state = S2;
-      else n_state = S1; 
+      if (!count) n_state = S2;
     end
-    S2: begin   
-      if (count) n_state = S3;
-      else n_state = S2; 
-    end
-    S3: begin    
-      if(count) n_state = S3;
-      else n_state = S0; 
+    S2: begin
+      if (count) n_state = S0;
+      else n_state = S2;
     end
     default: n_state = S0;
   endcase
@@ -49,39 +42,39 @@ end
 //output always block
 always_comb begin
   case (c_state)
-    S0: begin   
-      enable_a  = 1'b0;
-      enable_b  = 1'b0;
-      enable_pp = 1'b0;
-      load_p    = 1'b0;  
+    S0: if (load) begin   
+      en_i  = 1'b1;
+      en_pp = 1'b0;
+      en_fp = 1'b0; 
+    end
+    else begin
+      en_i  = 1'b0;
+      en_pp = 1'b0;
+      en_fp = 1'b0;
     end
 
-    S1: begin   
-      enable_a  = 1'b1;
-      enable_b  = 1'b1;
-      enable_pp = 1'b0;
-      load_p    = 1'b0;
+    S1: if(!count) begin   
+      en_i  = 1'b1;
+      en_pp = 1'b0;
+      en_fp = 1'b0;
     end
 
-    S2: begin   
-      enable_a  = 1'b1;
-      enable_b  = 1'b1;
-      enable_pp = 1'b1;
-      load_p    = 1'b0; 
+    S2: if(!count) begin   
+      en_i  = 1'b0;
+      en_pp = 1'b1;
+      en_fp = 1'b0;
     end
 
-    S3: begin   
-      enable_a  = 1'b1;
-      enable_b  = 1'b1;
-      enable_pp = 1'b1;
-      load_p    = 1'b1;
+    else begin   
+      en_i  = 1'b0;
+      en_pp = 1'b0;
+      en_fp = 1'b1;
     end
 
     default: begin  
-      enable_a  = 1'b0;
-      enable_b  = 1'b0;
-      enable_pp = 1'b0;
-      load_p    = 1'b0;  
+      en_i  = 1'b0;
+      en_pp = 1'b0;
+      en_fp = 1'b1; 
     end
   endcase
 end
