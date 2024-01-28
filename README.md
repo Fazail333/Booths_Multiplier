@@ -92,11 +92,13 @@ make viv_waves
 ## Implementation with Verilator
 
 Upon successful execution of the `make verilator` command, the terminal log output for the 16-bit multiplier, implementing signed and unsigned multiplication using Booth's Algorithm, is presented below:
+
  ![Verilator](./docs/Verilator.png)
 
 ### Implementation with Vivado
 
 Running the `make vivado` command generates the terminal log output as shown below:
+
  ![Vivado](./docs/Vivado.png)
 
 
