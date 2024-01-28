@@ -24,21 +24,21 @@ int product;
     top->trace(tfp, 99);  // Trace 99 levels of hierarchy
     tfp->open("waveform.vcd");
 
-	a = rand() ;
+    a = rand() ;
     b = rand() ;
 
 	
     // Simulate for MAX_SIM_TIME
     while (!Verilated::gotFinish() && sim_time < MAX_SIM_TIME) {
         top->reset = 0;
-		if(sim_time >= 2 &&  sim_time < 4){
+	if(sim_time >= 2 &&  sim_time < 4){
 			top->reset = 1;
 			top->in_a = 0;
 			top->in_b = 0;
 			top->valid_in= 0;
 			top->product = 0;
 		}
-		top->clk ^= 1;
+	top->clk ^= 1;
         top->eval();
 
         if(sim_time >= 4 &&  sim_time < 5){
@@ -46,22 +46,22 @@ int product;
 			top->in_b = b;
 		}
 
-		if(sim_time >= 6 &&  sim_time < 8){
+	if(sim_time >= 6 &&  sim_time < 8){
 
 			top->valid_in = 1;
 		
 		}
-			if(sim_time >= 8 &&  sim_time < 10){
+	if(sim_time >= 8 &&  sim_time < 10){
 
 			top->valid_in = 0;
 		
 		}
 
 
-		tfp->dump(sim_time);
-		product = top->product;
-		// Advance time
-		sim_time++;
+	tfp->dump(sim_time);
+	product = top->product;
+	// Advance time
+	sim_time++;
      
     }
 
