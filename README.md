@@ -49,7 +49,9 @@ Additionally, the Controller block diagram demonstrates the control signals gove
        
 To use the Booth's Multiplier implementation, clone this project using HTTPS:
 
- ``` git clone https://github.com/Fazail333/Booths_Multiplier.git ```
+ ```markdown
+ git clone https://github.com/Fazail333/Booths_Multiplier.git
+```
 
 ## 2. Installation of Vivado and Verilator 
 
