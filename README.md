@@ -1,7 +1,7 @@
 # Booth's Multiplier for 16-bit Signed Multiplication
 
 ## Overview
-  This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports both signed and 16-bit multiplication.
+  This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports 16-bit signed multiplication.
 
 
 ## Description
@@ -16,7 +16,7 @@
 # Key Features
 
   * Support for Signed Multiplication:  
-    The multiplier is designed to handle both signed 16-bit multiplication, providing flexibility for various use cases.
+    The multiplier is designed to handle 16-bit signed multiplication, providing flexibility for various use cases.
 
   * Efficient Bit Manipulation: 
     The implementation optimizes the multiplication process by efficiently handling bit manipulations and reducing the number of partial products.
