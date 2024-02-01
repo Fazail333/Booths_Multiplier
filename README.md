@@ -29,6 +29,9 @@
 # System Design Overview
 
   Representation of architecture through clear block diagrams is shown below.
+## Pinout Diagram
+The pinout diagram of the multiplier is given below.
+![pinout](./docs/pinout.png)
 
 ## Datapath Block Diagram
 
