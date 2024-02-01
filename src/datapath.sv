@@ -16,7 +16,7 @@ module datapath #(
     input logic                    clk,
     input logic                    reset,
 
-    output logic                   count,      // count the 16 clock cycles and return 1 or 0. 
+    output logic                   valid_out,      // count the 16 clock cycles and return 1 or 0. 
     output logic [WIDTH_FP-1:0] product 
 );
 
@@ -119,7 +119,7 @@ module datapath #(
         .reset(reset),
         .clk(clk),
 
-        .comp(count)
+        .valid_out(valid_out)
     );
 
     final_product multiply (

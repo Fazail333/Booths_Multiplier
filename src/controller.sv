@@ -1,6 +1,6 @@
 module controller (
     input logic  valid_in,
-    input logic  count,
+    input logic  valid_out,
 
     input logic  clk,
     input logic  reset,
@@ -29,10 +29,10 @@ always_comb begin
       else n_state = S0; 
     end
     S1: begin   
-      if (!count) n_state = S2;
+      if (!valid_out) n_state = S2;
     end
     S2: begin
-      if (count) n_state = S0;
+      if (valid_out) n_state = S0;
       else n_state = S2;
     end
     default: n_state = S0;
@@ -53,13 +53,13 @@ always_comb begin
       en_fp = 1'b0;
     end
 
-    S1: if(!count) begin   
+    S1: if(!valid_out) begin   
       en_i  = 1'b1;
       en_pp = 1'b0;
       en_fp = 1'b0;
     end
 
-    S2: if(!count) begin   
+    S2: if(!valid_out) begin   
       en_i  = 1'b0;
       en_pp = 1'b1;
       en_fp = 1'b0;

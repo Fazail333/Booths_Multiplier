@@ -1,9 +1,9 @@
 SRC_SV:= src/ars.sv  			\
-	 src/adder.sv  		\
+	 src/adder.sv  				\
 	 src/booth_multiplier.sv  	\
 	 src/comparator.sv  		\
 	 src/controller.sv  		\
-	 src/counter.sv  		\
+	 src/counter.sv  			\
 	 src/datapath.sv  		\
 	 src/final_product.sv  		\
 	 src/input_register.sv  	\
@@ -13,10 +13,13 @@ SRC_SV:= src/ars.sv  			\
 	 src/twos_complement.sv		\
 	 test/tb_booth_multiplier.sv
 
+DEFINES_VER:= src/defines/verilator.svh
+DEFINES_VIV:= src/defines/vivado.svh
+
 COMP_OPTS_SV := --incr --relax
 
 TB_TOP := tb_booth_multiplier
-MODULE := booth_multiplier
+MODULE := tb_booth_multiplier
 
 #==== Default target - running VIVADO simulation without drawing waveforms ====#
 .PHONY: vivado viv_elaborate viv_compile
@@ -62,7 +65,8 @@ else
 	@echo "log_wave -recursive *" > xsim_cfg.tcl
 	@echo "run all" >> xsim_cfg.tcl
 	@echo "exit" >> xsim_cfg.tcl
-	xvlog --sv $(COMP_OPTS_SV) $(SRC_SV)
+	#verilog -VIVADO  
+	xvlog -sv $(COMP_OPTS_SV) $(SRC_SV) $(DEFINES_VIV)
 	touch $@
 endif
 
@@ -96,6 +100,10 @@ else
 	touch $@
 endif
 
+#----------------------#
+#----- VERILATOR ------#
+#----------------------#
+
 .PHONY: verilator ver_waves 
 
 ver_waves: verilator
@@ -113,14 +121,17 @@ verilator: ./obj_dir/V$(MODULE)
 	@echo "### BUILDING SIM ###"
 	make -C obj_dir -f V$(MODULE).mk V$(MODULE)
 
-.stamp.verilate: ./src/*.sv ./test/$(TB_TOP).cpp
+.stamp.verilate: ./src/*.sv ./test/$(TB_TOP).*
 	@echo
 	@echo "### VERILATING ###"
-	verilator --trace -cc ./src/*.sv \
-	  	  --top-module $(MODULE) \
-		  -Wno-DECLFILENAME \
-		  -Wno-WIDTH \
-		  --exe ./test/$(TB_TOP).cpp
+	verilator --trace -cc $(SRC_SV) $(DEFINES_VER) 	\
+	  	  --top-module $(MODULE) 		\
+		  -Wno-DECLFILENAME 			\
+		  -Wno-WIDTH 				\
+		  -Wno-REDEFMACRO			\
+		  -Wno-INITIALDLY			\
+		  --exe ./test/$(TB_TOP).cpp 		\
+		  --timing
 	@touch .stamp.verilate
 
 .PHONY : clean

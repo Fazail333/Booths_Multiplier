@@ -1,4 +1,4 @@
-// Compare the value of clock cycles to 15-bits
+// compare the value of clock cycles to 15-bits
 
 module comparator #(
    parameter WIDTH = 4               // Counter width 
@@ -8,18 +8,18 @@ module comparator #(
    input logic             reset,
    input logic             clk,
 
-   output logic            comp      // comparator 
+   output logic            valid_out      // comparator 
 );
 
 always_ff @(posedge clk) begin
     if (reset) begin
-        comp <= 1'b0;
+        valid_out <= 1'b0;
     end
     else begin 
         if(in == 4'hE)begin
-            comp <= 1'b1;
+            valid_out <= 1'b1;
         end else begin
-            comp <= 1'b0;
+            valid_out <= 1'b0;
         end
     end
 end

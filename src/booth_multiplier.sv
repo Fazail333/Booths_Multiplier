@@ -15,8 +15,7 @@ module booth_multiplier #(
   output logic [WIDTH_PRODUCT-1:0] product
 );
  
-logic en_i, en_fp,    //  Enable for multiplier and multiplicand
-      en_pp;           
+logic en_i, en_fp, en_pp;     // Enables     
 
 logic [WIDTH_PP-1:0] pp;      // Partial product must be 33-bit 
 
@@ -30,7 +29,7 @@ datapath dp_bm (
   .en_fp(en_fp),
 
   .valid_in(valid_in),
-  .count(valid_out),
+  .valid_out(valid_out),
 
   .clk(clk),
   .reset(reset),
@@ -42,7 +41,7 @@ datapath dp_bm (
 controller cp_bm (
   .valid_in(valid_in),
 
-  .count(valid_out),
+  .valid_out(valid_out),
   .clk(clk),
   .reset(reset),
 
