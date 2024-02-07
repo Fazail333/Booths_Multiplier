@@ -11,8 +11,8 @@ module input_register #(
     output logic [WIDTH-1:0] out
 );
 
-always_ff @( posedge clk or posedge en) begin
-    if (reset) begin 
+always_ff @( posedge clk or negedge reset ) begin
+    if (!reset) begin 
         out <= 0;
     end 
     else begin

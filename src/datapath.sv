@@ -20,7 +20,7 @@ module datapath #(
     output logic [WIDTH_FP-1:0] product 
 );
 
-    logic [WIDTH_IN-1:0] a, b;           
+    logic [WIDTH_IN-1:0] a;          
     logic [WIDTH_IN-1:0] a2;             // 2's complement of a
     logic [WIDTH_IN-1:0] a_out;          // sel a from the booth's table 
     logic [WIDTH_PP-1:0] a_extend;       // a convert into 33 bits
@@ -40,16 +40,6 @@ module datapath #(
         .out(a)
     );
 
-    input_register register_b (
-        .in(multiplier_b),
-
-        .en(en_i),
-
-        .clk(clk),
-        .reset(reset),
-
-        .out(b)
-    );
     // twos_complement is used to subtract the value using adder.
 
     twos_complement subtracting (
@@ -75,7 +65,7 @@ module datapath #(
 
     partial_product partial_product (
         .in(s_pp),
-        .in_b(b),
+        .in_b(multiplier_b),
 
         .en_i(en_i),
         .en_fp(en_fp),

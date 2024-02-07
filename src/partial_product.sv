@@ -15,8 +15,8 @@ module partial_product #(
     output logic [WIDTH_PP-1:0] out 
 );
 
-always_ff @( posedge clk or posedge reset or posedge en_i or posedge en_pp) begin
-    if (reset)begin
+always_ff @( posedge clk or negedge reset ) begin
+    if (!reset)begin
         out <= 0; 
     end
     else begin

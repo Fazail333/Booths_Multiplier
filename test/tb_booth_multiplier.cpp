@@ -13,10 +13,7 @@ vluint64_t sim_time = 0;
 
 int main(int argc, char** argv) {
 
-    short int a,b;
-    int product;
     const int array_size = 6;
-    int relative_time[array_size] = {0, 44, 87, 130, 173, 216};
 
     // Verilator setup
     Verilated::commandArgs(argc, argv);
@@ -36,15 +33,7 @@ int main(int argc, char** argv) {
         
         // Simulate for MAX_SIM_TIME
         while (!Verilated::gotFinish() && sim_time < MAX_SIM_TIME) {
-                top->reset = 0;
-                top->valid_in = 0;
-            if ((sim_time >= relative_time[i] + 2) && (sim_time < relative_time[i] + 4))
-                {
-                    top->reset = 1;
-                }
-            if((sim_time >= relative_time[i] + 6) && (sim_time < relative_time[i] + 8)){
-                    top->valid_in = 1;
-                }
+
             top->clk ^= 1;
             top->eval();
 

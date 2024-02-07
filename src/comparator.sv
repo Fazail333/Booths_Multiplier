@@ -11,12 +11,12 @@ module comparator #(
    output logic            valid_out      // comparator 
 );
 
-always_ff @(posedge clk) begin
-    if (reset) begin
+always_ff @(posedge clk or negedge reset) begin
+    if (!reset) begin
         valid_out <= 1'b0;
     end
     else begin 
-        if(in == 4'hE)begin
+        if(in == 4'hf)begin
             valid_out <= 1'b1;
         end else begin
             valid_out <= 1'b0;

@@ -10,8 +10,8 @@ module final_product #(
     output logic [WIDTH_FP-1:0] product
 );
 
-always_ff @(posedge clk or posedge en_fp) begin
-    if ((reset) | (!en_fp)) begin
+always_ff @(posedge clk or negedge reset or posedge en_fp) begin
+    if ((!reset) | (!en_fp)) begin
         product <= 0;
     end
     else if (en_fp) begin

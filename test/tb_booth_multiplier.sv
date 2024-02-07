@@ -2,28 +2,25 @@ localparam WIDTH_INPUT = 16;
 localparam WIDTH_OUTPUT = 32;
 
 module tb_booth_multiplier(
-
 `ifdef VERILATOR
-    input logic clk,
-    input logic reset,
-    input logic valid_in
+    input logic clk
 `endif
-
     );
 
     // Inputs
-    logic [WIDTH_INPUT-1:0] multiplicand;
-    logic [WIDTH_INPUT-1:0] multiplier;
+    logic signed [WIDTH_INPUT-1:0] multiplicand;
+    logic signed [WIDTH_INPUT-1:0] multiplier;
     logic                   valid_out;
+    
+    logic                   reset;
+    logic                   valid_in;
 
 `ifndef VERILATOR
     logic                   clk;
-    logic                   reset;
-    logic                   valid_in;
 `endif
 
     // Outputs
-    logic [WIDTH_OUTPUT-1:0] product;
+    logic signed [WIDTH_OUTPUT-1:0] product;
 
     // Instantiate the Booth's Multiplier Datapath and Controller
     booth_multiplier UUT (
@@ -36,7 +33,7 @@ module tb_booth_multiplier(
         .product(product)
     );
 
-    logic [WIDTH_INPUT-2:0]a,b;
+    logic signed [WIDTH_INPUT-1:0]a,b;
 
 `ifndef VERILATOR
     initial begin
@@ -50,74 +47,71 @@ module tb_booth_multiplier(
     // Initial stimulus
     initial
     begin
-
-    `ifndef VERILATOR
+        
         init_signals;
-
         reset_sequence;
-    `endif
 
         repeat(5) begin
             int count = 0;
+
+            // Not add #1 because verilator can not show the output at the terminal and 
+            // not store the values of multiplier and multiplicand
+
             a <= $random; b <= $random;
 
             @(posedge clk); 
             multiplicand <= a; multiplier <= b;
-    
-    `ifndef VERILATOR       
+
             apply_inputs;
-    `endif
 
             while (!valid_out) 
             begin
                 @(posedge clk)
                 if (count > 20)
                 begin
-                    $fatal("No valid out appears for 15 clock cycles");
+                    $fatal("No valid out appears for 20 clock cycles");
                 end
                 count ++;
             end
 
             if (mul_ref(a,b) == (product)) 
                 begin
-            	    $display( "\nmultiplicand = %0d; multiplier = %0d; product = %0d", multiplicand, multiplier, mul_ref(a,b));
-            	    $display ("---> SUCCESS <---\n");
+            	    $display( "\nHexadecimal Values----> multiplicand = %h; multiplier = %h; product = %h ", multiplicand, multiplier, $signed(mul_ref(a,b)));
+            	    $display ("---> SUCCESSFULLY MULTIPLIED <---\n");
                 end 
                 else 
-                	$fatal("Error for input a=%d, b=%d, expected=%d, product=%d\n", a, b, mul_ref(a,b), product); 
+                	$display("Error for input a=%d, b=%d, expected=%h, product=%h\n", a, b, mul_ref(a,b), product); 
         repeat(2) @(posedge clk);
         end
         $finish;
     end
 
-`ifndef VERILATOR
     task init_signals;
         begin
             multiplicand <= 0; multiplier <= 0;
-            reset <=0; valid_in<= 0; a<=0; b<=0;
+            reset <= 1; valid_in <= 0; a <= 0; b <= 0;
         end
     endtask
 
     task reset_sequence;
         begin 
-            reset <= 0;
-            @(posedge clk) reset <= #1 1; 
-            @(posedge clk) reset <= #1 0;
+            reset <= 1;
+            @(posedge clk) reset <= 0; 
+            @(posedge clk) reset <= 1;
         end
     endtask
 
     task apply_inputs;
         begin
             valid_in <= 0;  
-            @(posedge clk) valid_in <= #1 1;
-            @(posedge clk) valid_in <= #1 0;
+            @(posedge clk) valid_in <= 1;
+            @(posedge clk) valid_in <= 0;
         end
     endtask
-`endif
 
-   function [WIDTH_OUTPUT-1:0]mul_ref(input logic [WIDTH_INPUT-2:0]in_a, in_b);
-   	begin 
-   		mul_ref = (in_a * in_b);
+   function [WIDTH_OUTPUT-1:0]mul_ref(input logic [WIDTH_INPUT-1:0]in_a, in_b);
+   	begin
+   		mul_ref = ($signed(in_a) * $signed(in_b));
    	end
    endfunction 	 
         	
