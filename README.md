@@ -1,7 +1,7 @@
-# Booth's Multiplier for 16-bit Signed and Unsigned Multiplication
+# Booth's Multiplier for 16-bit Signed Multiplication
 
 ## Overview
-  This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports both signed and unsigned 16-bit multiplication.
+  This repository contains an implementation of Booth's Multiplier, a hardware algorithm widely used for multiplying binary numbers efficiently. The implementation supports 16-bit signed multiplication.
 
 
 ## Description
@@ -15,8 +15,8 @@
 
 # Key Features
 
-  * Support for Signed and Unsigned Multiplication:  
-    The multiplier is designed to handle both signed and unsigned 16-bit multiplication, providing flexibility for various use cases.
+  * Support for Signed Multiplication:  
+    The multiplier is designed to handle 16-bit signed multiplication, providing flexibility for various use cases.
 
   * Efficient Bit Manipulation: 
     The implementation optimizes the multiplication process by efficiently handling bit manipulations and reducing the number of partial products.
@@ -29,6 +29,9 @@
 # System Design Overview
 
   Representation of architecture through clear block diagrams is shown below.
+## Pinout Diagram
+The pinout diagram of the multiplier is given below.
+![pinout](./docs/pinout.png)
 
 ## Datapath Block Diagram
 
@@ -91,7 +94,7 @@ make viv_waves
 
 ## Implementation with Verilator
 
-Upon successful execution of the `make verilator` command, the terminal log output for the 16-bit multiplier, implementing signed and unsigned multiplication using Booth's Algorithm, is presented below:
+Upon successful execution of the `make verilator` command, the terminal log output for the 16-bit multiplier, implementing signed and multiplication using Booth's Algorithm, is presented below:
 
  ![Verilator](./docs/Verilator.png)
 
