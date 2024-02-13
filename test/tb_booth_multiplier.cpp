@@ -12,12 +12,7 @@ vluint64_t MAX_SIM_TIME = 0;
 vluint64_t sim_time = 0;
 
 int main(int argc, char** argv) {
-<<<<<<< HEAD
-
-=======
-    short int a,b;
-    int product;
->>>>>>> origin/main
+    
     const int array_size = 6;
 
     // Verilator setup
