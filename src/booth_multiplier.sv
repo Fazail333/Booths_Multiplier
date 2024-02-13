@@ -11,13 +11,15 @@ module booth_multiplier #(
   input logic                     clk,
   input logic                     reset,
 
-  output logic                    valid_out,          //  valid_out for Final product (i.e answer)
+  output logic                    valid_out,          //  count_16 for Final product (i.e answer)
   output logic [WIDTH_PRODUCT-1:0] product
 );
  
-logic en_i, en_fp, en_pp;     // Enables     
+logic en_i, en_fp, en_pp, count_16;     // Enables     
 
 logic [WIDTH_PP-1:0] pp;      // Partial product must be 33-bit 
+
+logic [1:0] c_in, mux_sel;
 
 // Booth Multiplier Datapath
 datapath dp_bm (
@@ -27,27 +29,32 @@ datapath dp_bm (
   .en_i(en_i),
   .en_pp(en_pp),
   .en_fp(en_fp),
+  .sel(mux_sel),
 
   .valid_in(valid_in),
-  .valid_out(valid_out),
+  .count_16(count_16),
 
   .clk(clk),
   .reset(reset),
   
+  .out(c_in),
   .product(product)
 );
 
 // Booth Multiplier Controller
 controller cp_bm (
   .valid_in(valid_in),
+  .count_16(count_16),
+  .in(c_in),
 
-  .valid_out(valid_out),
   .clk(clk),
   .reset(reset),
 
+  .mux_sel(mux_sel),
   .en_i(en_i),
   .en_fp(en_fp),
-  .en_pp(en_pp)
+  .en_pp(en_pp),
+  .valid_out(valid_out)
 );
 
 endmodule

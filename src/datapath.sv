@@ -11,12 +11,14 @@ module datapath #(
     input logic                    en_i,    //enable for inputs
     input logic                    en_pp,   //enable for partial products
     input logic                    en_fp,   //enable for final product
+    input logic [1:0]              sel,
     input logic                    valid_in,    
 
     input logic                    clk,
     input logic                    reset,
 
-    output logic                   valid_out,      // count the 16 clock cycles and return 1 or 0. 
+    output logic [1:0]             out,
+    output logic                   count_16,      // count the 16 clock cycles and return 1 or 0. 
     output logic [WIDTH_FP-1:0] product 
 );
 
@@ -25,7 +27,9 @@ module datapath #(
     logic [WIDTH_IN-1:0] a_out;          // sel a from the booth's table 
     logic [WIDTH_PP-1:0] a_extend;       // a convert into 33 bits
     logic [WIDTH_PP-1:0] pp, a_pp, s_pp; // Partial Products 33-bits
-    logic [WIDTH_CO-1:0]  count_16; 
+    logic [WIDTH_CO-1:0]  count;
+
+    assign out = pp[1:0]; 
 
     // Inputs multiplier and multiplicand
 
@@ -49,7 +53,7 @@ module datapath #(
     );
                 
     mux_4x1 booth_table (
-        .sel(pp[1:0]), 
+        .sel(sel), 
 
         .seg0(a),
         .seg1(a2),
@@ -100,16 +104,16 @@ module datapath #(
 
         .en_pp(en_pp),
 
-        .out(count_16)
+        .out(count)
     );
 
     comparator compare_16 (
-        .in(count_16),
+        .in(count),
 
         .reset(reset),
         .clk(clk),
 
-        .valid_out(valid_out)
+        .count_16(count_16)
     );
 
     final_product multiply (

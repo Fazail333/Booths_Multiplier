@@ -8,18 +8,18 @@ module comparator #(
    input logic             reset,
    input logic             clk,
 
-   output logic            valid_out      // comparator 
+   output logic            count_16      // comparator 
 );
 
 always_ff @(posedge clk or negedge reset) begin
     if (!reset) begin
-        valid_out <= 1'b0;
+        count_16 <= 1'b0;
     end
     else begin 
         if(in == 4'hf)begin
-            valid_out <= 1'b1;
+            count_16 <= 1'b1;
         end else begin
-            valid_out <= 1'b0;
+            count_16 <= 1'b0;
         end
     end
 end

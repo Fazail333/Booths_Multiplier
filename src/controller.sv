@@ -1,13 +1,17 @@
 module controller (
     input logic  valid_in,
-    input logic  valid_out,
+    input logic  count_16,
+    input logic  [1:0] in,
 
     input logic  clk,
     input logic  reset,
 
+    output logic  [1:0] mux_sel,
     output logic en_i,
     output logic en_fp,
-    output logic en_pp
+    output logic en_pp,
+
+    output logic valid_out
 );
 
 logic [1:0] c_state, n_state;
@@ -29,9 +33,13 @@ always_comb begin
       else n_state = S0; 
     end
     S1: begin   
-      if (!valid_out) n_state = S1;
-      else n_state = S0;
+      if (count_16) n_state = S0;
+      else if ((in == 00)) n_state = S1;
+      else if ((in == 01)) n_state = S1;
+      else if ((in == 10)) n_state = S1;
+      else if ((in == 11)) n_state = S1;
     end
+
     default: n_state = S0;
   endcase
 end
@@ -42,30 +50,64 @@ always_comb begin
     S0: if (valid_in) begin   
       en_i  = 1'b1;
       en_pp = 1'b0;
-      en_fp = 1'b0; 
+      en_fp = 1'b0;
+      mux_sel = 2'b00; 
+      valid_out = 1'b0;
     end
     else begin
       en_i  = 1'b0;
       en_pp = 1'b0;
       en_fp = 1'b0;
+      mux_sel = 2'b00;
+      valid_out = 1'b0;
     end
 
-    S1: if(!valid_out) begin   
-      en_i  = 1'b0;
-      en_pp = 1'b1;
-      en_fp = 1'b0;
-    end
-
-    else begin   
+    S1: if(count_16) begin   
       en_i  = 1'b0;
       en_pp = 1'b0;
       en_fp = 1'b1;
+      mux_sel = 2'b00;
+      valid_out = 1'b1;
+    end
+
+    else if (!count_16 && (in == 0)) begin   
+      en_i  = 1'b0;
+      en_pp = 1'b1;
+      en_fp = 1'b0;
+      mux_sel = 2'b00;
+      valid_out = 1'b0;
+    end
+
+    else if (!count_16 && (in == 1)) begin   
+      en_i  = 1'b0;
+      en_pp = 1'b1;
+      en_fp = 1'b0;
+      mux_sel = 2'b01;
+      valid_out = 1'b0;
+    end
+
+    else if (!count_16 && (in == 2)) begin   
+      en_i  = 1'b0;
+      en_pp = 1'b1;
+      en_fp = 1'b0;
+      mux_sel = 2'b10;
+      valid_out = 1'b0;
+    end
+
+    else if (!count_16 && (in == 3)) begin   
+      en_i  = 1'b0;
+      en_pp = 1'b1;
+      en_fp = 1'b0;
+      mux_sel = 2'b11;
+      valid_out = 1'b0;
     end
 
     default: begin  
       en_i  = 1'b0;
       en_pp = 1'b0;
       en_fp = 1'b0; 
+      mux_sel = 2'b00;
+      valid_out = 1'b0;
     end
   endcase
 end
