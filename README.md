@@ -31,7 +31,7 @@
   Representation of architecture through clear block diagrams is shown below.
 ## Pinout Diagram
 The pinout diagram of the multiplier is given below.
-![pinout](./docs/pinout.png)
+![pinout](./docs/Pinout.png)
 
 ## Datapath Block Diagram
 
@@ -96,12 +96,20 @@ make viv_waves
 
 Upon successful execution of the `make verilator` command, the terminal log output for the 16-bit multiplier, implementing signed and multiplication using Booth's Algorithm, is presented below:
 
- ![Verilator](./docs/Verilator.png)
+ ![Verilator](./docs/Verilator.jpg)
 
 ### Implementation with Vivado
 
 Running the `make vivado` command generates the terminal log output as shown below:
 
- ![Vivado](./docs/Vivado.png)
+ ![Vivado](./docs/Vivado.jpg)
+
+### Waveform Drawn
+
+The waveform is shown below:
+
+ ![Waveform](./docs/Waveform.jpg)
+
+ 
 
 
