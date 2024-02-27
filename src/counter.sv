@@ -5,18 +5,24 @@ module counter #(
 ) (
   input logic              clk,
   input logic              reset,
-  input logic              load,
+  input logic              clear,
     
-  input logic              en_pp,
+  input logic              en_pp,     // enable use for counting bits.
+  //input logic              en_i,
 
   output logic [WIDTH-1:0] out
 );
 
 always_ff @( posedge clk or negedge reset ) begin
-    if (!reset | load)begin
+    if (!reset /*| clear*/)begin
         out <= 0;
-    end else if (en_pp) begin
-        out <= out + 1;
+    end else begin 
+      if (clear) begin
+          out <= 0;
+      end
+      else if (en_pp) begin
+          out <= out + 1;
+      end
     end
 end
     

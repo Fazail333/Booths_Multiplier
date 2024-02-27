@@ -9,8 +9,8 @@ module datapath #(
 
     // Enables are the output of controller.
     input logic                    en_i,    //enable for inputs
-    input logic                    en_pp,   //enable for partial products
-    input logic                    en_fp,   //enable for final product
+    input logic                    en_pp,   //enable for partial products counter
+    input logic                    en_fp,   //enable for final product mux
     input logic [1:0]              sel,
     input logic                    valid_in,    
 
@@ -72,8 +72,6 @@ module datapath #(
         .in_b(multiplier_b),
 
         .en_i(en_i),
-        .en_fp(en_fp),
-        .en_pp(en_pp),
 
         .clk(clk),
         .reset(reset),
@@ -97,7 +95,7 @@ module datapath #(
     );
 
     counter count16 (
-        .load(valid_in),
+        .clear(valid_in),
 
         .reset(reset),
         .clk(clk),
@@ -116,13 +114,10 @@ module datapath #(
         .count_16(count_16)
     );
 
-    final_product multiply (
+    final_product output_mux(
         .in(pp[WIDTH_PP-1:1]),
 
         .en_fp(en_fp),
-
-        .reset(reset),
-        .clk(clk),
         
         .product(product)
     );

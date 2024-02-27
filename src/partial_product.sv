@@ -6,8 +6,8 @@ module partial_product #(
     input logic [WIDTH_IN-1:0] in_b,
     
     input logic                en_i,
-    input logic                en_fp,
-    input logic                en_pp,
+    //input logic                en_fp,
+    //input logic                en_pp,
 
     input logic                clk,
     input logic                reset,
@@ -22,7 +22,10 @@ always_ff @( posedge clk or negedge reset ) begin
     else begin
         if (en_i) begin
             out <= {16'h0000, in_b, 1'b0};
-        end else if (en_pp) begin
+        end/* else if (en_pp) begin
+            out <= in;
+        end*/
+        else begin
             out <= in;
         end
     end
